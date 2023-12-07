@@ -1,5 +1,4 @@
-%audiofile = 'audio/C_major.ogg';
-audiofile = 'audio/twinkle.mp3';
+audiofile = '../audio/C_major.ogg';
 
 [y,Fs] = audioread(audiofile);
 % if stereo audio, take just one channel:
@@ -47,10 +46,12 @@ for j=0:M
         i = 0;
     end
 
-    freq = 1/(1/Fs*i)*2;
-    
-    amps = [amps p];
-    freqs = [freqs freq];
+    freq = 1/(1/Fs*i);
+
+    if 27.5 < freq && freq < 4186.01
+        amps = [amps p];
+        freqs = [freqs freq];
+    end
 end
 
 % mph = mean(amps);
@@ -105,7 +106,7 @@ end
 %lookup note in Lilypond format
 notes = note_lut(keys,5);
 %convert beats to duration
-durations = num2str(4./beats');
+durations = num2str(floor(4./beats'));
 plot_notes(string(notes{:,1}),durations)
 
 %song = audioplayer(y,Fs)
